@@ -3,7 +3,7 @@ import asyncio
 from typing import Optional
 from datetime import datetime
 from mcp.server.fastmcp import FastMCP
-from .baostock_api import BaoStockAPI
+from .eastmoney_api import EastMoneyAPI
 # 配置日志
 logging.basicConfig(
     level=logging.DEBUG,
@@ -20,14 +20,15 @@ logger = logging.getLogger("mcp-baostock")
 # 初始化 FastMCP 服务器
 mcp = FastMCP(
     "mcp-baostock",
-    version="0.1.0",
-    description="MCP BaoStock Server for stock data",
-    dependencies=["baostock"],
+    version="0.2.0",
+    description="MCP A-share stock data server (EastMoney/Sina backend; "
+                "baostock replaced — its data port is unreachable outside CN)",
+    dependencies=["httpx"],
     env_vars={},
     debug=True  # 启用debug模式
 )
 
-stock_api = BaoStockAPI()
+stock_api = EastMoneyAPI()
 
 @mcp.tool()
 async def get_current_time() -> str:
